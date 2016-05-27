@@ -7,7 +7,6 @@ from farmers_market import get_farmers_data, CSV_URL
 
 @responses.activate
 def test_my_api():
-     
     sample_data = open('farmers_market_test.csv', 'rb').read()
     responses.add(responses.GET, CSV_URL,
                   body=sample_data, status=200,
