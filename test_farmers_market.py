@@ -1,6 +1,5 @@
 import requests
 import responses
-from unittest.mock import MagicMock, patch
 
 from farmers_market import get_farmers_data, CSV_URL
 

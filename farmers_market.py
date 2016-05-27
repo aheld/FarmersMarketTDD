@@ -5,7 +5,7 @@ CSV_URL = 'http://data.phl.opendata.arcgis.com/datasets/0707c1f31e2446e881d680b0
 
 def get_farmers_data():
     download = requests.get(CSV_URL, stream=True)
-    cr = csv.DictReader(download.iter_lines(decode_unicode='utf-8'), delimiter=',')
+    cr = csv.reader(download.iter_lines(decode_unicode='utf-8'), delimiter=',')
     my_list = list(cr)
     return my_list
         
