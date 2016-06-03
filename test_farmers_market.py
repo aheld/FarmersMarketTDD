@@ -1,23 +1,36 @@
-import requests
-import responses
+from unittest import TestCase
 
-from farmers_market import get_farmers_data, CSV_URL
+from farmers_market import add_distance_info, find_closest
 
 
-@responses.activate
-def test_my_api():
-     
-    sample_data = open('farmers_market_test.csv', 'rb').read()
-    responses.add(responses.GET, CSV_URL,
-                  body=sample_data, status=200,
-                  content_type='text/csv; charset=utf-8',
-                  stream=True
-                  )
+class TestMarkets(TestCase):
+    def setUp(self):
+        self.sample_market_data =[
+            {'X': -75.17270125,
+            'Y': 39.94084192,
+            'NAME': '18th and Christian*'},
+            {'X':-75.20926373,
+            'Y':39.94955888,
+            'NAME':'Clark Park*'}
+            ]
+    
+    def test_decorate_market(self):
+        sample_market = {'X':-75.20926373,
+                            'Y':39.94955888}
+        assert 'dist' not in sample_market.keys()
+        
+        decorated = add_distance_info( sample_market )
+                
+        assert 'dist' in decorated.keys()
+    
+    def test_find_dist(self):
+        clark_park = add_distance_info(self.sample_market_data[1])
+        assert clark_park['dist'] < 1
+        
+        christian = add_distance_info(self.sample_market_data[0])
+        assert christian['dist'] > 1
 
-    farm_list = get_farmers_data()
-    assert len(farm_list) == 10
-    assert farm_list[0]["NAME"] == "18th and Christian*"
-    assert farm_list[1]["NAME"] == "22nd & Tasker*"
-  
-    assert len(responses.calls) == 1
-    assert responses.calls[0].request.url == CSV_URL
+
+    def test_find_the_closest(self):    
+        closest_park = find_closest(self.sample_market_data)
+        assert closest_park['NAME'] == 'Clark Park*'
