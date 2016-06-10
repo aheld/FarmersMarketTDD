@@ -41,3 +41,5 @@ class TestMarketsLoader(TestCase):
     def test_load_market(self, mock_add_distance_info):
         find_closest({"bad": "data"})
         assert mock_add_distance_info.called
+        assert mock_add_distance_info.assert_called_once_with([{'a': 1},
+                                                               {'b': 2}])
