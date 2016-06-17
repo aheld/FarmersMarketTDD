@@ -18,13 +18,18 @@ def add_distance_info(market):
 
 def get_farmers_market_data(url):
     response = requests.get(url, stream=True)
-    markets = csv.DictReader(response.iter_lines(decode_unicode=True), delimiter=',')
+    response.encoding = 'utf-8-sig'
+    markets = csv.DictReader(response.iter_lines(decode_unicode=True),
+                             delimiter=',')
     return list(markets)
 
 
-def load_markets():
-    pass
+def main():
+    url = 'http://data.phl.opendata.arcgis.com/datasets/0707c1f31e2446e881d680b0a5ee54bc_0.csv' #noqa
+    markets = get_farmers_market_data(url)
+    closest = find_closest(markets)
+    return closest
 
 
 if __name__ == '__main__':
-    print(find_closest())
+    print(main())
