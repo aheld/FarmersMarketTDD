@@ -10,8 +10,8 @@ use TDD to process open gov data
     pip install -r requirements.txt
     
 
-# Download file
+# Explore the data source
  
     https://www.opendataphilly.org/dataset/farmers-markets-locations
-
+    
 
