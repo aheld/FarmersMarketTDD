@@ -22,18 +22,21 @@ class TestMarkets(TestCase):
                          'Y': 39.94955888}
         assert 'dist' not in sample_market.keys()
 
-        decorated = add_distance_info(sample_market)
+        decorated = add_distance_info(sample_market, 
+                    (-75.1991014, 39.9567835))
         assert 'dist' in decorated.keys()
 
     def test_find_dist(self):
-        clark_park = add_distance_info(self.sample_market_data[1])
+        clark_park = add_distance_info(self.sample_market_data[1],
+        (-75.1991014, 39.9567835))
         assert clark_park['dist'] < 1
 
-        christian = add_distance_info(self.sample_market_data[0])
+        christian = add_distance_info(self.sample_market_data[0],
+        (-75.1991014, 39.9567835))
         assert christian['dist'] > 1
 
     def test_find_the_closest(self):
-        closest_park = find_closest(self.sample_market_data)
+        closest_park = find_closest(self.sample_market_data,(-75.1991014, 39.9567835) )
         assert closest_park['NAME'] == 'Clark Park*'
 
 
@@ -59,7 +62,7 @@ class TestMarketsEndToEnd(TestCase):
         responses.add(responses.GET, CSV_URL,
                       body=test_csv, status=200,
                       stream=True)
-        assert main()['NAME'] == '29th & Wharton*' 
+        assert main('philly')['NAME'] == '29th & Wharton*' 
 
 
     @responses.activate
@@ -69,7 +72,7 @@ class TestMarketsEndToEnd(TestCase):
         responses.add(responses.GET, CSV_URL,
                       body=test_csv, status=200,
                       stream=True)
-        assert main()['NAME'] == '29th & Wharton*' 
+        assert main('philly')['NAME'] == '29th & Wharton*' 
 
 
 
